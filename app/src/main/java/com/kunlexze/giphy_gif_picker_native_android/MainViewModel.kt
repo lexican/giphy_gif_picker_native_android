@@ -1,8 +1,11 @@
 package com.kunlexze.giphy_gif_picker_native_android
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kunlexze.giphy_gif_picker_native_android.network.GiphyApi
+import com.kunlexze.giphy_gif_picker_native_android.network.GiphyModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,10 +16,13 @@ class MainViewModel : ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    private var _gifs = MutableLiveData<List<GiphyModel>>(emptyList())
+    val gifs: LiveData<List<GiphyModel>>
+        get() = _gifs
+
     init {
         getGifs()
     }
-
 
     private fun getGifs() {
 
@@ -25,10 +31,7 @@ class MainViewModel : ViewModel() {
 
             try {
                 var listResult = getDeferredGifs.await()
-                Log.d(
-                    "TAG",
-                    "listResult  ${listResult.toString()}"
-                )
+                _gifs.postValue(listResult.data)
             } catch (t: Throwable) {
                 Log.d("TAG", "Throwable $t")
             }

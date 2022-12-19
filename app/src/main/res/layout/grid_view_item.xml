@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="giphyModel"
+            type="com.kunlexze.giphy_gif_picker_native_android.network.GiphyModel" />
+    </data>
+
+    <ImageView
+        android:id="@+id/gif"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/gif"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        app:imageUrl="@{giphyModel.images.original.url}"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+</layout>
