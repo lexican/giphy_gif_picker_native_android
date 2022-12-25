@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+enum class ApiStatus { LOADING, ERROR, DONE }
+
 class MainViewModel : ViewModel() {
 
     private var viewModelJob = Job()
@@ -19,6 +21,10 @@ class MainViewModel : ViewModel() {
     private var _gifs = MutableLiveData<List<GiphyModel>>(emptyList())
     val gifs: LiveData<List<GiphyModel>>
         get() = _gifs
+
+    private val _status = MutableLiveData<ApiStatus>()
+    val status: LiveData<ApiStatus>
+        get() = _status
 
     init {
         getGifs()
@@ -30,10 +36,13 @@ class MainViewModel : ViewModel() {
             var getDeferredGifs = GiphyApi.retrofitService.getGifs()
 
             try {
+                _status.value = ApiStatus.LOADING
                 var listResult = getDeferredGifs.await()
+                _status.value = ApiStatus.DONE
                 _gifs.postValue(listResult.data)
             } catch (t: Throwable) {
-                Log.d("TAG", "Throwable $t")
+                _status.value = ApiStatus.ERROR
+                _gifs.value = ArrayList()
             }
         }
 

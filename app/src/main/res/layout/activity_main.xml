@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="mainViewModel"
+            name="viewModel"
             type="com.kunlexze.giphy_gif_picker_native_android.MainViewModel" />
     </data>
 
@@ -26,9 +26,19 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:listData="@{mainViewModel.gifs}"
+            app:listData="@{viewModel.gifs}"
             app:spanCount="2"
             tools:listitem="@layout/grid_view_item" />
+
+        <ImageView
+            android:id="@+id/status_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:apiStatus="@{viewModel.status}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

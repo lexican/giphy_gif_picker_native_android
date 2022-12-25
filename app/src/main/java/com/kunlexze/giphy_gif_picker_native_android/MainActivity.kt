@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.gifsGrid.adapter = GifGridAdapter()
 
-        binding.mainViewModel = viewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
 
