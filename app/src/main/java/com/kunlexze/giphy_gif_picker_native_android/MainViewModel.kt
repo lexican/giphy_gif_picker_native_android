@@ -40,7 +40,9 @@ class MainViewModel : ViewModel() {
                 var listResult = getDeferredGifs.await()
                 _status.value = ApiStatus.DONE
                 _gifs.postValue(listResult.data)
+                Log.i("MainViewModel" , "listResult ${listResult.toString()}")
             } catch (t: Throwable) {
+                Log.i("MainViewModel" , "Error $t")
                 _status.value = ApiStatus.ERROR
                 _gifs.value = ArrayList()
             }
