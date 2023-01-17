@@ -9,8 +9,8 @@ import com.kunlexze.giphy_gif_picker_native_android.network.GiphyModel
 @Entity
 data class DatabaseGiphy constructor(
     @PrimaryKey
-    val type: String,
     val id: String,
+    val type: String,
     val title: String,
     val imageUrl: String
 )

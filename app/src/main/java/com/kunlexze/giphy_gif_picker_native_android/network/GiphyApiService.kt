@@ -18,7 +18,7 @@ var retrofit: Retrofit = Retrofit.Builder()
 interface GiphyApiService {
     @GET("v1/gifs/trending?api_key=$API_KEY&limit=25&rating=g")
     fun getGifs():
-            Deferred<GiphyResponse>
+            Deferred<NetworkGiphyContainer>
 }
 
 object GiphyApi {

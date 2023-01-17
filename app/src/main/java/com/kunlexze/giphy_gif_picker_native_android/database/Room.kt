@@ -13,8 +13,9 @@ interface GiphyDao {
     fun insertAll(vararg gifs: DatabaseGiphy)
 }
 
-@Database(entities = [DatabaseGiphy::class], version = 1)
+@Database(entities = [DatabaseGiphy::class], version = 1, exportSchema = false)
 abstract class GiphyDatabase : RoomDatabase() {
+    abstract val giphyDao: GiphyDao
 }
 
 private lateinit var INSTANCE: GiphyDatabase

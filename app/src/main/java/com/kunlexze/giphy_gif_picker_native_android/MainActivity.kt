@@ -1,5 +1,6 @@
 package com.kunlexze.giphy_gif_picker_native_android
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -10,7 +11,13 @@ import com.kunlexze.giphy_gif_picker_native_android.databinding.ActivityMainBind
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        requireNotNull(applicationContext) {
+            "You can only access the viewModel after onViewCreated()"
+        }
+        ViewModelProvider(this, MainViewModelFactory(applicationContext as Application)).get(
+            MainViewModel::class.java
+        )
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +30,5 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-
-
     }
 }
