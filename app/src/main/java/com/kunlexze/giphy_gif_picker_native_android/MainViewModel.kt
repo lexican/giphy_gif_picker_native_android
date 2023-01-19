@@ -1,15 +1,9 @@
 package com.kunlexze.giphy_gif_picker_native_android
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.kunlexze.giphy_gif_picker_native_android.database.getDatabase
-import com.kunlexze.giphy_gif_picker_native_android.network.GiphyApi
-import com.kunlexze.giphy_gif_picker_native_android.network.GiphyModel
-import com.kunlexze.giphy_gif_picker_native_android.repository.GifsRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.kunlexze.giphy_gif_picker_native_android.repository.GiphyRepository
 import kotlinx.coroutines.launch
 
 enum class ApiStatus { LOADING, ERROR, DONE }
@@ -19,14 +13,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val status: LiveData<ApiStatus>
         get() = _status
 
-     val database = getDatabase(application)
-     val gifsRepository = GifsRepository(database)
+    private val database = getDatabase(application)
+    private val gifsRepository = GiphyRepository(database)
+
 
     init {
+        fetchGifs(offset = 0)
+    }
+
+    fun fetchGifs(offset: Int) {
         viewModelScope.launch {
-            gifsRepository.refreshGifs()
+            gifsRepository.refreshGifs(offset = offset)
         }
     }
 
-    val gifs = gifsRepository.gifs;
+    val gifs = gifsRepository.gifs
+
 }

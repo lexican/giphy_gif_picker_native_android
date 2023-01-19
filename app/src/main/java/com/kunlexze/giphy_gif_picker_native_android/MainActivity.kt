@@ -1,12 +1,15 @@
 package com.kunlexze.giphy_gif_picker_native_android
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.kunlexze.giphy_gif_picker_native_android.adapters.GifGridAdapter
 import com.kunlexze.giphy_gif_picker_native_android.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,5 +33,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        binding.gifsGrid.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)){
+                    var size: Int =  0
+                    if(viewModel.gifs?.value?.size  != null){
+                        size = viewModel.gifs?.value?.size!!
+                    }
+                    viewModel.fetchGifs(offset = size)
+                }
+            }
+
+        });
     }
 }
