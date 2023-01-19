@@ -6,7 +6,7 @@ GiphyPicker is a mobile app that allows interacting with gifs from the giphy api
 
 ## Screenshots
 
-### Splash
+### Home
 
 <img src="screenshots/home.png" height="500em" />
 
