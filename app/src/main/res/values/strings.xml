@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">giphy_gif_picker_native_android</string>
+    <string name="app_name">GiphyPicker</string>
     <string name="gif">gif</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.kunlexze.giphy_gif_picker_native_android.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.kunlexze.giphy_gif_picker_native_android.database.GiphyDatabase
