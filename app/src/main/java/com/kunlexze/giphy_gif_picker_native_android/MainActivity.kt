@@ -1,13 +1,17 @@
 package com.kunlexze.giphy_gif_picker_native_android
 
 import android.app.Application
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.kunlexze.giphy_gif_picker_native_android.adapters.GifGridAdapter
+import com.kunlexze.giphy_gif_picker_native_android.adapters.GifListener
 import com.kunlexze.giphy_gif_picker_native_android.databinding.ActivityMainBinding
 
 
@@ -29,7 +33,13 @@ class MainActivity : AppCompatActivity() {
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        binding.gifsGrid.adapter = GifGridAdapter()
+        binding.gifsGrid.adapter = GifGridAdapter(GifListener { gif ->
+            var clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            var clip = ClipData.newPlainText("label", gif.images.original.url)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, "Gif url has been copied to your clipboard", Toast.LENGTH_LONG)
+                .show()
+        })
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -37,9 +47,9 @@ class MainActivity : AppCompatActivity() {
         binding.gifsGrid.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1)){
-                    var size: Int =  0
-                    if(viewModel.gifs?.value?.size  != null){
+                if (!recyclerView.canScrollVertically(1)) {
+                    var size: Int = 0
+                    if (viewModel.gifs?.value?.size != null) {
                         size = viewModel.gifs?.value?.size!!
                     }
                     viewModel.fetchGifs(offset = size)
@@ -47,5 +57,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         });
+
     }
 }

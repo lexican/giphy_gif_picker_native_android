@@ -8,11 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kunlexze.giphy_gif_picker_native_android.databinding.GridViewItemBinding
 import com.kunlexze.giphy_gif_picker_native_android.network.GiphyModel
 
-class GifGridAdapter : ListAdapter<GiphyModel, GifGridAdapter.GifViewholder>(DiffCallback) {
+class GifGridAdapter(private val longClickListener: GifListener) :
+    ListAdapter<GiphyModel, GifGridAdapter.GifViewholder>(DiffCallback) {
 
-    class GifViewholder(private var binding: GridViewItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(giphyModel: GiphyModel){
+    class GifViewholder(private var binding: GridViewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(longClickListener: GifListener, giphyModel: GiphyModel) {
             binding.giphyModel = giphyModel
+            binding.longClickListener = longClickListener
             binding.executePendingBindings()
         }
     }
@@ -27,14 +30,24 @@ class GifGridAdapter : ListAdapter<GiphyModel, GifGridAdapter.GifViewholder>(Dif
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): GifViewholder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): GifViewholder {
         return GifViewholder(GridViewItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: GifViewholder, position: Int) {
         val marsProperty = getItem(position)
-        holder.bind(marsProperty)
+        holder.bind(longClickListener, marsProperty)
+    }
+
+}
+
+class GifListener(val longClickListener: (gif: GiphyModel) -> Unit) {
+    fun onLongClick(gif: GiphyModel): Boolean {
+        longClickListener(gif)
+        return true
     }
 
 }

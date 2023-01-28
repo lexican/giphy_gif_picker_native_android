@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <data>
-
         <variable
             name="giphyModel"
             type="com.kunlexze.giphy_gif_picker_native_android.network.GiphyModel" />
+
+        <variable
+            name="longClickListener"
+            type="com.kunlexze.giphy_gif_picker_native_android.adapters.GifListener" />
     </data>
 
     <ImageView
@@ -19,6 +22,8 @@
         android:padding="2dp"
         android:scaleType="centerCrop"
         app:imageUrl="@{giphyModel.images.original.url}"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        tools:src="@tools:sample/backgrounds/scenic"
+        android:onLongClick="@{() -> longClickListener.onLongClick(giphyModel)}"
+        />
 
 </layout>
