@@ -9,7 +9,8 @@ import kotlinx.coroutines.launch
 enum class ApiStatus { LOADING, ERROR, DONE }
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val _status = MutableLiveData<ApiStatus>()
+
+    private var _status = MutableLiveData<ApiStatus>()
     val status: LiveData<ApiStatus>
         get() = _status
 
@@ -22,9 +23,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchGifs(offset: Int) {
+        _status.value = ApiStatus.LOADING
         viewModelScope.launch {
             gifsRepository.refreshGifs(offset = offset)
+            _status.value = ApiStatus.DONE
         }
+
+
     }
 
     val gifs = gifsRepository.gifs

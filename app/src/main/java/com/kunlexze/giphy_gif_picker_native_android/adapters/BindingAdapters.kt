@@ -1,5 +1,6 @@
 package com.kunlexze.giphy_gif_picker_native_android.adapters
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
@@ -34,6 +35,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
 @BindingAdapter("apiStatus")
 fun bindStatus(statusImageView: ImageView, status: ApiStatus?) {
     when (status) {
+
         ApiStatus.LOADING -> {
             statusImageView.visibility = View.VISIBLE
             statusImageView.setImageResource(R.drawable.loading_animation)

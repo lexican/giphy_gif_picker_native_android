@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             var clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             var clip = ClipData.newPlainText("label", gif.images.original.url)
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(this, "Gif url has been copied to your clipboard", Toast.LENGTH_LONG)
+            Toast.makeText(this, "Gif url has been copied to clipboard", Toast.LENGTH_LONG)
                 .show()
         })
 
