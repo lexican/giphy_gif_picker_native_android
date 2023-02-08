@@ -21,9 +21,10 @@ class MainActivity : AppCompatActivity() {
         requireNotNull(applicationContext) {
             "You can only access the viewModel after onViewCreated()"
         }
-        ViewModelProvider(this, MainViewModelFactory(applicationContext as Application)).get(
-            MainViewModel::class.java
-        )
+        ViewModelProvider(
+            this,
+            MainViewModelFactory(applicationContext as Application)
+        )[MainViewModel::class.java]
 
     }
 
@@ -34,8 +35,8 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         binding.gifsGrid.adapter = GifGridAdapter(GifListener { gif ->
-            var clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            var clip = ClipData.newPlainText("label", gif.images.original.url)
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("label", gif.images.original.url)
             clipboard.setPrimaryClip(clip)
             Toast.makeText(this, "Gif url has been copied to clipboard", Toast.LENGTH_LONG)
                 .show()
@@ -48,15 +49,20 @@ class MainActivity : AppCompatActivity() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    var size: Int = 0
-                    if (viewModel.gifs?.value?.size != null) {
-                        size = viewModel.gifs?.value?.size!!
+                    var size = 0
+                    if (viewModel.gifs.value?.size != null) {
+                        size = viewModel.gifs.value?.size!!
+                        if (viewModel.loadMore.value == false) {
+                            viewModel.fetchGifs(offset = size)
+                        }
+                    } else {
+                        viewModel.fetchGifs(offset = size)
                     }
-                    viewModel.fetchGifs(offset = size)
+
                 }
             }
 
-        });
+        })
 
     }
 }

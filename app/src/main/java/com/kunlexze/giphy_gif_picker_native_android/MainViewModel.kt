@@ -14,6 +14,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val status: LiveData<ApiStatus>
         get() = _status
 
+    private var  _loadMore = MutableLiveData<Boolean>(false)
+    val loadMore: LiveData<Boolean>
+        get() = _loadMore
+
     private val database = getDatabase(application)
     private val gifsRepository = GiphyRepository(database)
 
@@ -23,12 +27,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchGifs(offset: Int) {
-        _status.value = ApiStatus.LOADING
-        viewModelScope.launch {
-            gifsRepository.refreshGifs(offset = offset)
-            _status.value = ApiStatus.DONE
+        if(offset == 0){
+            _status.value = ApiStatus.LOADING
+            viewModelScope.launch {
+                gifsRepository.refreshGifs(offset = offset)
+                _status.value = ApiStatus.DONE
+            }
+        }else{
+            _loadMore.value = true;
+            viewModelScope.launch {
+                gifsRepository.refreshGifs(offset = offset)
+                _loadMore.value = false;
+            }
         }
-
 
     }
 

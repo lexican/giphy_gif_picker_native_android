@@ -67,4 +67,10 @@ dependencies {
 
     // Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:2.4.3"
+
+    //Tests
+    // Test helpers for LiveData
+    androidTestImplementation "android.arch.core:core-testing:1.1.1"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+
 }

@@ -9,8 +9,15 @@ interface GiphyDao {
     @Query("select * from databasegiphy")
     fun getGifs(): LiveData<List<DatabaseGiphy>>
 
+    @Query("select * from databasegiphy where id=:key")
+    fun getGifById(key: String): DatabaseGiphy
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(gif: DatabaseGiphy)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg gifs: DatabaseGiphy)
+
 }
 
 @Database(entities = [DatabaseGiphy::class], version = 1, exportSchema = false)
